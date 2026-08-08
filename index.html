@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>متجر goudzl</title>
+<style>
+  :root {
+    --bg: #0e1013;
+    --panel: #161a1f;
+    --panel-2: #1c2129;
+    --line: #262b32;
+    --text: #e9edf1;
+    --muted: #8b93a1;
+    --accent: #3fb0ff;
+    --pulse: #2ecc71;
+    --price-bg: #17301f;
+    --price-text: #3ecb6c;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+    min-height: 100vh;
+  }
+  header {
+    position: sticky;
+    top: 0;
+    background: rgba(14,16,19,0.92);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--line);
+    padding: 16px 20px;
+    z-index: 10;
+  }
+  .header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    font-size: 18px;
+  }
+  .live-dot {
+    width: 9px; height: 9px; border-radius: 50%;
+    background: var(--pulse);
+    box-shadow: 0 0 0 0 rgba(46,204,113,0.6);
+    animation: pulse 1.6s infinite;
+  }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(46,204,113,0.6); }
+    70% { box-shadow: 0 0 0 8px rgba(46,204,113,0); }
+    100% { box-shadow: 0 0 0 0 rgba(46,204,113,0); }
+  }
+  .status { color: var(--muted); font-size: 12px; }
+
+  .filters {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 2px;
+  }
+  .filter-btn {
+    flex-shrink: 0;
+    background: var(--panel);
+    color: var(--text);
+    border: 1px solid var(--line);
+    padding: 8px 16px;
+    border-radius: 999px;
+    font-size: 13.5px;
+    cursor: pointer;
+    transition: 0.15s;
+    white-space: nowrap;
+  }
+  .filter-btn:hover { border-color: var(--accent); }
+  .filter-btn.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #06202f;
+    font-weight: 700;
+  }
+
+  main {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 20px 16px 60px;
+  }
+
+  .section-title {
+    font-size: 14px;
+    color: var(--muted);
+    margin: 6px 2px 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .suggested-row {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding-bottom: 14px;
+    margin-bottom: 22px;
+    border-bottom: 1px solid var(--line);
+  }
+  .suggested-card {
+    flex-shrink: 0;
+    width: 190px;
+    background: var(--panel-2);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .suggested-card img {
+    width: 100%;
+    height: 110px;
+    object-fit: cover;
+    display: block;
+    background: #0a0c0e;
+  }
+  .suggested-card .sc-body { padding: 10px; }
+  .suggested-card .sc-text {
+    font-size: 12.5px;
+    color: var(--text);
+    max-height: 48px;
+    overflow: hidden;
+    line-height: 1.5;
+  }
+  .badge-old {
+    display: inline-block;
+    font-size: 10.5px;
+    color: #f4c542;
+    background: rgba(244,197,66,0.12);
+    border: 1px solid rgba(244,197,66,0.3);
+    padding: 2px 8px;
+    border-radius: 999px;
+    margin-bottom: 6px;
+  }
+
+  .post {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 16px 18px;
+    margin-bottom: 14px;
+    animation: fadeIn 0.4s ease;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .price-tag {
+    display: inline-block;
+    background: var(--price-bg);
+    color: var(--price-text);
+    font-weight: 700;
+    font-size: 14px;
+    padding: 4px 12px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+  }
+  .post-text {
+    white-space: pre-wrap;
+    line-height: 1.7;
+    font-size: 15.5px;
+  }
+  .post img, .post video {
+    width: 100%;
+    border-radius: 10px;
+    margin-top: 10px;
+    display: block;
+  }
+  .post-meta {
+    margin-top: 10px;
+    color: var(--muted);
+    font-size: 12px;
+  }
+  .empty {
+    text-align: center;
+    color: var(--muted);
+    padding: 60px 20px;
+    line-height: 1.8;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <div class="brand"><span class="live-dot"></span> متجر goudzl</div>
+    <div class="status" id="status">بيتحدث تلقائي…</div>
+  </div>
+  <div class="filters">
+    <button class="filter-btn active" data-tier="">كل الأسعار</button>
+    <button class="filter-btn" data-tier="under_2000">أقل من 2,000</button>
+    <button class="filter-btn" data-tier="under_10000">أقل من 10,000</button>
+    <button class="filter-btn" data-tier="under_20000">أقل من 20,000</button>
+  </div>
+</header>
+
+<main>
+  <div id="suggestedSection" style="display:none;">
+    <div class="section-title">✨ مقترح ليك — معروضة من فترة ولسه متاحة</div>
+    <div class="suggested-row" id="suggestedRow"></div>
+  </div>
+
+  <div id="feed">
+    <div class="empty">لسه مفيش عروض ظاهرة. أول عرض ينزل في القناة هيظهر هنا فورًا.</div>
+  </div>
+</main>
+
+<script>
+  const FEED = document.getElementById('feed');
+  const STATUS = document.getElementById('status');
+  const SUGGESTED_SECTION = document.getElementById('suggestedSection');
+  const SUGGESTED_ROW = document.getElementById('suggestedRow');
+  let currentTier = '';
+  let knownIds = new Set();
+
+  function priceLabel(p) {
+    if (p == null) return '';
+    return `<span class="price-tag">${p.toLocaleString('en-US')} جنيه</span>`;
+  }
+
+  function renderPost(p) {
+    const div = document.createElement('div');
+    div.className = 'post';
+    let html = priceLabel(p.price);
+    if (p.text) html += `<div class="post-text"></div>`;
+    if (p.media_url && p.media_type === 'photo') {
+      html += `<img src="${p.media_url}" loading="lazy">`;
+    } else if (p.media_url && (p.media_type === 'video' || p.media_type === 'animation')) {
+      html += `<video src="${p.media_url}" controls></video>`;
+    }
+    const d = new Date(p.date * 1000);
+    html += `<div class="post-meta">${d.toLocaleString('ar-EG')}</div>`;
+    div.innerHTML = html;
+    if (p.text) div.querySelector('.post-text').textContent = p.text;
+    return div;
+  }
+
+  function renderSuggestedCard(p) {
+    const div = document.createElement('div');
+    div.className = 'suggested-card';
+    let html = '';
+    if (p.media_url) html += `<img src="${p.media_url}" loading="lazy">`;
+    html += `<div class="sc-body">
+      <span class="badge-old">من فترة</span>
+      ${priceLabel(p.price)}
+      <div class="sc-text"></div>
+    </div>`;
+    div.innerHTML = html;
+    if (p.text) div.querySelector('.sc-text').textContent = p.text;
+    return div;
+  }
+
+  async function fetchSuggested() {
+    try {
+      const res = await fetch('/api/suggested');
+      const items = await res.json();
+      if (items.length === 0) { SUGGESTED_SECTION.style.display = 'none'; return; }
+      SUGGESTED_ROW.innerHTML = '';
+      items.forEach(p => SUGGESTED_ROW.appendChild(renderSuggestedCard(p)));
+      SUGGESTED_SECTION.style.display = 'block';
+    } catch (e) { /* تجاهل */ }
+  }
+
+  async function fetchPosts(reset = false) {
+    try {
+      const url = currentTier ? `/api/posts?tier=${currentTier}` : '/api/posts';
+      const res = await fetch(url);
+      const posts = await res.json();
+      STATUS.textContent = 'متصل — بيتحدث تلقائي';
+
+      if (reset) {
+        knownIds = new Set();
+        FEED.innerHTML = '';
+        if (posts.length === 0) {
+          FEED.innerHTML = '<div class="empty">مفيش عروض في الفئة دي حاليًا.</div>';
+          return;
+        }
+        posts.slice().reverse().forEach(p => {
+          knownIds.add(p.id);
+          FEED.prepend(renderPost(p));
+        });
+        return;
+      }
+
+      const newOnes = posts.filter(p => !knownIds.has(p.id));
+      if (newOnes.length === 0) return;
+      if (knownIds.size === 0) FEED.innerHTML = '';
+      newOnes.sort((a, b) => b.date - a.date).forEach(p => {
+        knownIds.add(p.id);
+        FEED.prepend(renderPost(p));
+      });
+    } catch (e) {
+      STATUS.textContent = 'في مشكلة اتصال، هيحاول تاني…';
+    }
+  }
+
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentTier = btn.dataset.tier;
+      fetchPosts(true);
+    });
+  });
+
+  fetchPosts(true);
+  fetchSuggested();
+  setInterval(() => fetchPosts(false), 4000);
+  setInterval(fetchSuggested, 60000);
+</script>
+
+</body>
+</html>
